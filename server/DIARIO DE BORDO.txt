@@ -1,0 +1,43 @@
+Diário de Bordo
+
+
+
+24, março de 2017
+
+Conforme conversamos vamos implementar uma mudança no servidor...
+
+Objetivo é tornar o serviço mais escalável e reduzir o processamento no webserver.
+
+troca do banco de dados para mongodb.
+
+
+quanto ao servidor ainda não sabemos se vamos python ou o php. 
+<eu deixar nego quebrar a cara um pouquinho e depois decidimos>
+
+
+Chamada do web service
+
+
+https://www.intelliurb.org/api/trace?
+    user_id=<email:str45>&
+    token=<rndom:str64>&
+    camp_id=<campanha:str45>&
+    dev_id=<str45>&
+    num_regs<int:0-4096>&
+    sec_token=<str64>&
+    tp_record:”<NOTE|PHOTO|TRACES|MOVIE>”
+
+    payload (formato JSON: )
+
+No client deve haver a possibilidade do usuário trocar a url básica a ser usada.
+
+
+Isso vai ser gravado em um doc JSON do mongodb para processamento futuro
+
+
+
+Note que o token deve ser obtido antes de enviar o arquivo, o arquivo nao será recebido se o token correto nao for apresentado.
+
+A implementacao vai ser php/slim + apache e mongodb.
+
+Depois, se precisar vc pode extrair para uma tabela em algum banco relacional. 
