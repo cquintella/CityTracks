@@ -1,0 +1,80 @@
+# Program: Draw StickyMap
+
+#uncomment the next line to install this packet on first run.
+#install.packages("leaflet")
+library("leaflet")
+
+
+
+### Functions ###
+Build_Grid<-function(min.lt,max.lt, min.lg,max.lg,cell.size){
+  #Function to build the Grid, Returning data.frame as Grid
+  # Define Borders of the cells (after this just draw the lines)
+  brd.lt<-seq(from=min.lt , to=max.lt, by=cell.size)
+  brd.lg<-seq(from=min.lg , to=max.lg, by=cell.size)
+  cell.id<-0
+  for (indx.lt in brd.lt) {
+    for (indx.lg in brd.lg){
+      cell.id<-cell.id+1
+      line<-c("cell_id"=cell.id,"upper_lt"=indx.lt,"upper_lg"=indx.lg,"lower_lt"=indx.lt+cell.size,"lower_lg"=indx.lt+cell.size)
+      Grid<-rbind(Grid,line)
+    }
+  }
+  colnames(Grid)<-c("cell_id","upper_lt","upper_lg","lower_lt","lower_lg")
+  return(Grid)
+}
+
+
+### BEGIN PROGRAM ###
+
+setwd("")
+tchunks<-read.csv("tchunk-90-preparado-fill-motorizado-nao motorizado.csv", encoding="UTF-8")
+segments<-read.csv("segments.csv", encoding="UTF-8")
+trajectories<-read.csv("trajectories.csv", encoding="UTF-8")
+
+#Find Grid Borders
+max.lt<-max(max(segments$start_lat),max(segments$end_lat))
+max.lg<-max(max(segments$end_long),max(segments$start_long))
+min.lt<-min(min(segments$start_lat),min(segments$end_lat))
+min.lg<-min(min(segments$end_long),min(segments$start_long))
+
+#To build the grid we will add 1' to each side from the middle.
+# to get some margin along the cells.
+cell.size<-0.00099
+max.lt<-max.lt+cell.size
+max.lg<-max.lg+cell.size
+min.lt<-min.lt-cell.size
+min.lg<-min.lg-cell.size
+
+#Build the Grid
+dt.Grid<-data.frame()
+dt.Grid<-Build_Grid(min.lt,max.lt, min.lg,max.lg, cell.size)
+
+
+#Draw the map
+fit.bounds=c(lng1 = min.lg, lat1 = min.lt, lng2 = max.lg, lat2 = max.lt)
+
+df.lines <- data.frame(group = c("A", "B"),
+                            lat = c(segments$start_lat, segments$end_lat),
+                            long = c(segments$start_long, segments$end_long))
+#Reader map
+mapa <- leaflet() %>% 
+  addProviderTiles(providers$HERE) %>% addTiles()
+mapa %>%
+  # local
+  fitBounds( lng1 = min.long, 
+             lat1 = min.lat, 
+             lng2 = max.long, 
+             lat2 = max.lat) %>%
+  addMeasure(   position = "bottomleft",
+                primaryLengthUnit = "meters",
+                primaryAreaUnit = "sqmeters",
+                activeColor = "#3D535D",
+                completedColor = "#7D4479")
+
+#just a few lines at first run
+mapa  %>% addPolylines (data = df.lines[1:3,], lng = ~long, lat = ~lat, group = ~group, color="red", weight = 1, opacity =0.5)
+mapa %>% addPolygons(data=dt.Grid, )
+
+
+
