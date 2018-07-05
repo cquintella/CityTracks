@@ -1,0 +1,253 @@
+---
+
+title: "Análise Exploratória de Dados"
+
+author: "Quintella / Helio / Estevan"
+
+date: "07/04/2018"
+
+output: html_document
+
+---
+
+```{r setup, include=FALSE}
+
+
+
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+
+
+
+## Análise Exploratória de dados TCHUNKS do CityTracks
+
+###Introdução
+
+
+
+blablabla
+
+
+
+Na primeiro etapa do trabalho apresentamos o processo de carga de dados, seguida da análise exploratória de dados conforme apresentado em [Tukey 1977].
+
+
+
+###Descrição do Dataset
+
+O dataset é composto de 3 tabelas:
+
+Trajetórias: São as viagens de 260 viagens de 11 usuários ao longo de 222 dias. 
+
+
+
+Essas trajatórias foram computadas do banco de dados de mobilidade gerado pela app CityTracks.
+
+
+
+Este dataset está disponível no github do projeto CityTracks [Citytracks 2014].
+
+
+
+As viagens são divididas em segmentos que tem no máximo 20 minutos, e são compostos de pausas e segmentos de deslocamentos.
+
+
+
+Por sua vez, os segmentos são divididos em granularidades temporais de 90 segundos. Sendo que pode ocorrer de que um último segundo tenha menos de 90s. 
+
+
+
+Os chunks tem suas caracteristicas de mobilidade computada e foram usados para classificar a mobilidade quanto ao modal de usuários de smartphones.
+
+
+
+Segments: Os segmentos
+
+Chunks
+
+
+
+### Carga de Dados
+
+
+
+```{r }
+
+setwd("C:/Users/xxxx/Documents")
+
+tchunk<-read.csv("tchunk-90-preparado-fill-motorizado-nao motorizado.csv", encoding="UTF-8")
+
+segment<-read.csv("segments.csv", encoding="UTF-8")
+
+trajectory<-read.csv("trajectories.csv", encoding="UTF-8")
+
+```
+
+
+
+
+
+## Análise dos Chunks
+
+Este trablho foca sua análise no tchuncks que contem agregados de mobilidade de até 90s.
+
+
+
+Os chunks são métricas obridas de raw data que já foram devitamente tratadas, com o processo apresentado em [Quintella 2013].
+
+```{r, echo=FALSE}
+
+head(tchunk, n=3)
+
+```
+
+
+
+
+
+### Velocidade Média
+
+A velocidade média foi obtida pela distancia percorrida no chunk e e pela diferença de tempo dos timestamps. Para obter a distância foi usada a formula de Harvesine.
+
+
+
+```{r, echo=FALSE}
+
+paste("Média: ", mean(tchunk$mean_speed))
+
+paste("Mediana:", median(tchunk$mean_speed))
+
+paste("Desvio Padrão:", sd(tchunk$mean_speed))
+
+library(e1071)  
+
+paste("Curtose:", kurtosis(tchunk$mean_speed))
+
+```
+
+
+
+### Aceleração Média
+
+
+
+```{r, echo=FALSE}
+
+paste("Média: ", mean(tchunk$max_acceleration))
+
+paste("Mediana:", median(tchunk$max_acceleration))
+
+paste("Desvio Padrão:", sd(tchunk$max_acceleration))
+
+library(e1071)  
+
+paste("Curtose:", kurtosis(tchunk$max_acceleration))
+
+```
+
+
+
+
+
+### Tempo de parada (Stop)
+
+
+
+```{r, echo=FALSE}
+
+paste("Média: ", mean(tchunk$stop_time))
+
+paste("Mediana:", median(tchunk$stop_time))
+
+paste("Desvio Padrão:", sd(tchunk$stop_time))
+
+library(e1071)  
+
+paste("Curtose:", kurtosis(tchunk$stop_time))
+
+```
+
+
+
+### Histograma para a Velocidade Média
+
+```{r, echo=FALSE}
+
+hist(tchunk$mean_speed, col="darkblue", border="black", xlab="MPG", ylab="Densidade", main="Histograma Velocidde Média")
+
+
+
+```
+
+
+
+
+
+### Histograma para a Máxima Aceleração
+
+```{r, echo=FALSE}
+
+hist(tchunk$max_acceleration, col="darkgreen", border="black", xlab="MPG", ylab="Densidade", main="Histograma Máxima Aceleração")
+
+
+
+```
+
+
+
+### Histograma para o Tempo de Parada
+
+```{r, echo=FALSE}
+
+hist(tchunk$stop_time, col="darkred", border="black", xlab="MPG", ylab="Densidade", main="Histograma Tempo de Parada")
+
+
+
+```
+
+
+
+Boxplot (Para a Velocidade Média)
+
+
+
+```{r, echo=FALSE}
+
+boxplot(tchunk$mean_speed)
+
+
+
+```
+
+
+
+Boxplot (Para a Máxima Aceleração)
+
+
+
+```{r, echo=FALSE}
+
+boxplot(tchunk$max_acceleration)
+
+
+
+```
+
+
+
+Boxplot (Para o tempo de parada)
+
+
+
+```{r, echo=FALSE}
+
+boxplot(tchunk$stop_time)
+
+
+
+```
+
+
+
+##Referências
