@@ -1,0 +1,638 @@
+---
+title: "**An·lise ExploratÛria de Dados**"
+output: html_document   
+---
+####**Nomes:** Carlos Quintella, Estevan Barbar·, Helio Moura\
+\
+\
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+##An·lise ExploratÛria de dados TCHUNKS do CityTracks
+Na primeiro etapa do trabalho apresentamos o processo de carga de dados, seguida da an·lise exploratÛria de dados conforme apresentado em [Tukey 1977].
+
+###<span style="color:blue">DescriÁ„o do Dataset</span>
+O dataset È composto de 3 tabelas:
+TrajetÛrias: S„o as viagens de 260 viagens de 11 usu·rios ao longo de 222 dias. Essas trajatÛrias foram computadas do banco de dados de mobilidade gerado pela app CityTracks.
+
+
+As viagens s„o divididas em segmentos que tem no m·ximo 20 minutos, e s„o compostos de pausas e segmentos de deslocamentos.
+
+Por sua vez, os segmentos s„o divididos em granularidades temporais de 90 segundos. Sendo que pode ocorrer de que um ˙ltimo segundo tenha menos de 90s. 
+
+Os chunks tem suas caracteristicas de mobilidade computada e foram usados para classificar a mobilidade quanto ao modal de usu·rios de smartphones.
+
+ - Este dataset est· disponÌvel no github do projeto CityTracks [Citytracks 2014].
+
+
+###<span style="color:blue">Carga de Pacotes do R</span>
+```{r }
+library("e1071")
+library("ggplot2")
+```
+
+###<span style="color:blue">Carga de Dados</span>
+
+```{r message=FALSE, warning=FALSE}
+
+setwd("~/Desktop/+Experimento_6/Lixo/") 
+tchunk<-read.csv("tchunk-90-preparado-fill-motorizado-nao motorizado.csv", encoding="UTF-8")
+segment<-read.csv("segments.csv", encoding="UTF-8")
+trajectory<-read.csv("trajectories.csv", encoding="UTF-8")
+```
+
+
+## An·lise das Vari·veis da tabela de Chunks
+Este trabalho foca sua an·lise no tchuncks que contem agregados de mobilidade de atÈ 90s.
+
+Os chunks s„o mÈtricas obridas de raw data que j· foram devitamente tratadas, com o processo apresentado em [Quintella 2013].
+
+Especialmente para este trabalho os tchunks s„o mais relevantes pois apresentam informaÁıes que foram computadas dentro de um processo de KDD para permitir a classificaÁ„o de mobilidade.
+
+###**Modal**
+
+Este gr·fico apresenta a quantidade de dados por modal distribuiÌdos da seguinte forma: 
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+sprintf("REGISTROS - Bike: %i | Bus: %i | Car: %i | Moto: %i | Walk: %i",nrow(tchunk[tchunk$modal=="bike",]),nrow(tchunk[tchunk$modal=="bus",]),nrow(tchunk[tchunk$modal=="car",]),nrow(tchunk[tchunk$modal=="moto",]),nrow(tchunk[tchunk$modal=="walk",]))
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+plot(tchunk$modal, ylim=c(0,600),col = c("red", "blue", "darkgreen","pink","gray"))
+```
+
+
+###**Velocidade MÈdia**
+A velocidade mÈdia foi obtida pela distancia percorrida no chunk e e pela diferenÁa de tempo dos timestamps. Para obter a dist‚ncia foi usada a formula de Harvesine.
+
+#### Bike
+
+```{r, echo=FALSE}
+# Gera as mÈtricas por linha
+
+sprintf("M…TRICAS B¡SICAS - MÈdia: %.2f | Mediana: %.2f | Desvio Padr„o: %.2f | Curtose: %.2f",mean(tchunk$mean_speed[tchunk$modal=="bike"]),median(tchunk$mean_speed[tchunk$modal=="bike"]),sd(tchunk$mean_speed[tchunk$modal=="bike"]),kurtosis(tchunk$mean_speed[tchunk$modal=="bike"]))
+
+# GeraÁ„o do Histograma 
+
+hist(tchunk$mean_speed[tchunk$modal=="bike"], col="blue3", border="black", xlab="Valores", ylab="FrequÍncia", main="Histograma Velocidade MÈdia (BIKE)",xlim=c(0,6),ylim=c(0,20),breaks = 30)
+
+
+# Insere as mÈtricas no gr·fico do histograma
+
+abline(v = c(
+  mean(tchunk$mean_speed[tchunk$modal=="bike"]),   median(tchunk$mean_speed[tchunk$modal=="bike"]), mean(tchunk$mean_speed[tchunk$modal=="bike"])+sd(tchunk$mean_speed[tchunk$modal=="bike"]), 
+mean(tchunk$mean_speed[tchunk$modal=="bike"])-sd(tchunk$mean_speed[tchunk$modal=="bike"]) ),col = c("orange", "red", "green","green"),lwd = c(2,2,4),lty=c(1,2,3));
+
+# CriaÁ„o da legenda no histograma
+
+legend(x="topright", #posicao da legenda
+c("MÈdia","Mediana","Desvio Padr„o"), #nomes da legenda
+col=c("orange","red","green"), #cores
+lty=c(1,2,3), #estilo da linha
+lwd=c(2,2,4)) #grossura das linhas
+
+boxplot(tchunk$mean_speed[tchunk$modal=="bike"], main="BoxPlot Velocidade MÈdia (BIKE)",col = "blue3")
+
+acf(tchunk$mean_speed[tchunk$modal=="bike"], main="FunÁ„o de AutocorrelaÁ„o para o modal (BIKE)",col=c("blue3"),xlab="",ylab="AutocorrelaÁ„o",lwd=2)
+```
+
+#### Bus
+
+```{r, echo=FALSE}
+
+sprintf("M…TRICAS B¡SICAS - MÈdia: %.2f | Mediana: %.2f | Desvio Padr„o: %.2f | Curtose: %.2f",mean(tchunk$mean_speed[tchunk$modal=="bus"]),median(tchunk$mean_speed[tchunk$modal=="bus"]),sd(tchunk$mean_speed[tchunk$modal=="bus"]),kurtosis(tchunk$mean_speed[tchunk$modal=="bus"]))
+
+hist(tchunk$mean_speed[tchunk$modal=="bus"], col="blue3", border="black", xlab="Valores", ylab="FrequÍncia", main="Histograma Velocidade MÈdia (BUS)",xlim=c(0,12),ylim=c(0,20),breaks = 30)
+
+abline(v = c(mean(tchunk$mean_speed[tchunk$modal=="bus"]), median(tchunk$mean_speed[tchunk$modal=="bus"]), sd(tchunk$mean_speed[tchunk$modal=="bus"])),col = c("orange", "red", "green"),lwd = c(2,2,4),lty=c(1,2,3));
+
+legend(x="topright", #posicao da legenda
+c("MÈdia","Mediana","Desvio Padr„o"), #nomes da legenda
+col=c("orange","red","green"), #cores
+lty=c(1,2,3), #estilo da linha
+lwd=c(2,2,4)) #grossura das linhas
+
+boxplot(tchunk$mean_speed[tchunk$modal=="bus"], main="BoxPlot Velocidade MÈdia (BUS)",col = "blue3")
+
+acf(tchunk$mean_speed[tchunk$modal=="bus"], main="FunÁ„o de AutocorrelaÁ„o para o modal (BUS)",col=c("blue3"),xlab="",ylab="AutocorrelaÁ„o",lwd=2)
+```
+
+#### Car
+
+```{r, echo=FALSE}
+sprintf("M…TRICAS B¡SICAS - MÈdia: %.2f | Mediana: %.2f | Desvio Padr„o: %.2f | Curtose: %.2f",mean(tchunk$mean_speed[tchunk$modal=="car"]),median(tchunk$mean_speed[tchunk$modal=="car"]),sd(tchunk$mean_speed[tchunk$modal=="car"]),kurtosis(tchunk$mean_speed[tchunk$modal=="car"]))
+
+
+hist(tchunk$mean_speed[tchunk$modal=="car"], col="blue3", border="black", xlab="Valores", ylab="FrequÍncia", main="Histograma Velocidade MÈdia (CAR)",xlim=c(0,30),ylim=c(0,70),breaks = 30)
+
+abline(v = c(mean(tchunk$mean_speed[tchunk$modal=="car"]), median(tchunk$mean_speed[tchunk$modal=="car"]), sd(tchunk$mean_speed[tchunk$modal=="car"])),col = c("orange", "red", "green"),lwd = c(2,2,4),lty=c(1,2,3));
+
+legend(x="topright", #posicao da legenda
+c("MÈdia","Mediana","Desvio Padr„o"), #nomes da legenda
+col=c("orange","red","green"), #cores
+lty=c(1,2,3), #estilo da linha
+lwd=c(2,2,4)) #grossura das linhas
+
+boxplot(tchunk$mean_speed[tchunk$modal=="car"], main="BoxPlot Velocidade MÈdia (CAR)",col = "blue3")
+
+acf(tchunk$mean_speed[tchunk$modal=="car"], main="FunÁ„o de AutocorrelaÁ„o para o modal (CAR)",col=c("blue3"),xlab="",ylab="AutocorrelaÁ„o",lwd=2)
+```
+
+#### Moto
+
+```{r, echo=FALSE}
+sprintf("M…TRICAS B¡SICAS - MÈdia: %.2f | Mediana: %.2f | Desvio Padr„o: %.2f | Curtose: %.2f",mean(tchunk$mean_speed[tchunk$modal=="moto"]),median(tchunk$mean_speed[tchunk$modal=="moto"]),sd(tchunk$mean_speed[tchunk$modal=="moto"]),kurtosis(tchunk$mean_speed[tchunk$modal=="moto"]))
+
+
+hist(tchunk$mean_speed[tchunk$modal=="moto"], col="blue3", border="black", xlab="Valores", ylab="FrequÍncia", main="Histograma Velocidade MÈdia (MOTO)",xlim=c(0,20),ylim=c(0,15),breaks = 40)
+
+abline(v = c(mean(tchunk$mean_speed[tchunk$modal=="moto"]), median(tchunk$mean_speed[tchunk$modal=="car"]), sd(tchunk$mean_speed[tchunk$modal=="moto"])),col = c("orange", "red", "green"),lwd = c(2,2,4),lty=c(1,2,3));
+
+legend(x="topright", #posicao da legenda
+c("MÈdia","Mediana","Desvio Padr„o"), #nomes da legenda
+col=c("orange","red","green"), #cores
+lty=c(1,2,3), #estilo da linha
+lwd=c(2,2,4)) #grossura das linhas
+
+boxplot(tchunk$mean_speed[tchunk$modal=="moto"],main="BoxPlot Velocidade MÈdia (MOTO)",col = "blue3")
+
+acf(tchunk$mean_speed[tchunk$modal=="moto"], main="FunÁ„o de AutocorrelaÁ„o para o modal (MOTO)",col=c("blue3"),xlab="",ylab="AutocorrelaÁ„o",lwd=2)
+```
+
+#### Walk
+
+```{r, echo=FALSE}
+sprintf("M…TRICAS B¡SICAS - MÈdia: %.2f | Mediana: %.2f | Desvio Padr„o: %.2f | Curtose: %.2f",mean(tchunk$mean_speed[tchunk$modal=="walk"]),median(tchunk$mean_speed[tchunk$modal=="walk"]),sd(tchunk$mean_speed[tchunk$modal=="walk"]),kurtosis(tchunk$mean_speed[tchunk$modal=="walk"]))
+
+hist(tchunk$mean_speed[tchunk$modal=="walk"], col="blue3", border="black", xlab="Valores", ylab="FrequÍncia", main="Histograma Velocidade MÈdia (WALK)",xlim=c(0,10),ylim=c(0,50),breaks = 40)
+
+abline(v = c(mean(tchunk$mean_speed[tchunk$modal=="walk"]), median(tchunk$mean_speed[tchunk$modal=="walk"]), sd(tchunk$mean_speed[tchunk$modal=="walk"])),col = c("orange", "red", "green"),lwd = c(2,2,4),lty=c(1,2,3));
+
+legend(x="topright", #posicao da legenda
+c("MÈdia","Mediana","Desvio Padr„o"), #nomes da legenda
+col=c("orange","red","green"), #cores
+lty=c(1,2,3), #estilo da linha
+lwd=c(2,2,4)) #grossura das linhas
+
+boxplot(tchunk$mean_speed[tchunk$modal=="walk"], main="BoxPlot Velocidade MÈdia (WALK)",col = "blue3")
+
+acf(tchunk$mean_speed[tchunk$modal=="walk"], main="FunÁ„o de AutocorrelaÁ„o para o modal (WALK)",col=c("blue3"),xlab="",ylab="AutocorrelaÁ„o",lwd=2)
+
+```
+
+###**Velocidade M·xima**
+A velocidade m·xima obtida para cada um dos modais.
+
+#### Bike
+
+```{r, echo=FALSE}
+sprintf("M…TRICAS B¡SICAS - MÈdia: %.2f | Mediana: %.2f | Desvio Padr„o: %.2f | Curtose: %.2f",mean(tchunk$max_speed[tchunk$modal=="bike"]),median(tchunk$max_speed[tchunk$modal=="bike"]),sd(tchunk$max_speed[tchunk$modal=="bike"]),kurtosis(tchunk$max_speed[tchunk$modal=="bike"]))
+
+hist(tchunk$max_speed[tchunk$modal=="bike"], col="blue3", border="black", xlab="Valores", ylab="FrequÍncia", main="Histograma Velocidade M·xima (BIKE)",xlim=c(0,8),ylim=c(0,25),breaks = 30)
+
+abline(v = c(mean(tchunk$max_speed[tchunk$modal=="bike"]), median(tchunk$max_speed[tchunk$modal=="bike"]), sd(tchunk$max_speed[tchunk$modal=="bike"])),col = c("orange", "red", "green"),lwd = c(2,2,4),lty=c(1,2,3));
+
+legend(x="toprigh", #posicao da legenda
+c("MÈdia","Mediana","Desvio Padr„o"), #nomes da legenda
+col=c("orange","red","green"), #cores
+lty=c(1,2,3), #estilo da linha
+lwd=c(2,2,4)) #grossura das linhas
+
+boxplot(tchunk$max_speed[tchunk$modal=="bike"], main="BoxPlot Velocidade M·xia (BIKE)",col = "blue3")
+
+acf(tchunk$max_speed[tchunk$modal=="bike"], main="FunÁ„o de AutocorrelaÁ„o para o modal (BIKE)",col="blue3",xlab="",ylab="AutocorrelaÁ„o",lwd=2)
+```
+
+#### Bus
+
+```{r, echo=FALSE}
+sprintf("M…TRICAS B¡SICAS - MÈdia: %.2f | Mediana: %.2f | Desvio Padr„o: %.2f | Curtose: %.2f",mean(tchunk$max_speed[tchunk$modal=="bus"]),median(tchunk$max_speed[tchunk$modal=="bus"]),sd(tchunk$max_speed[tchunk$modal=="bus"]),kurtosis(tchunk$max_speed[tchunk$modal=="bus"]))
+
+hist(tchunk$max_speed[tchunk$modal=="bus"], col="blue3", border="black", xlab="Valores", ylab="FrequÍncia", main="Histograma Velocidade M·xima (BUS)",xlim=c(0,20),ylim=c(0,10),breaks = 30)
+
+abline(v = c(mean(tchunk$max_speed[tchunk$modal=="bus"]), median(tchunk$max_speed[tchunk$modal=="bus"]), sd(tchunk$max_speed[tchunk$modal=="bus"])),col = c("orange", "red", "green"),lwd = c(2,2,4),lty=c(1,2,3));
+
+legend(x="topright", #posicao da legenda
+c("MÈdia","Mediana","Desvio Padr„o"), #nomes da legenda
+col=c("orange","red","green"), #cores
+lty=c(1,2,3), #estilo da linha
+lwd=c(2,2,4)) #grossura das linhas
+
+boxplot(tchunk$max_speed[tchunk$modal=="bus"], main="BoxPlot Velocidade M·xima (BUS)",col = "blue3")
+
+acf(tchunk$max_speed[tchunk$modal=="bus"], main="FunÁ„o de AutocorrelaÁ„o para o modal (BUS)",col=c("blue3"),xlab="",ylab="AutocorrelaÁ„o",lwd=2)
+```
+
+#### Car
+
+```{r, echo=FALSE}
+sprintf("M…TRICAS B¡SICAS - MÈdia: %.2f | Mediana: %.2f | Desvio Padr„o: %.2f | Curtose: %.2f",mean(tchunk$max_speed[tchunk$modal=="car"]),median(tchunk$max_speed[tchunk$modal=="car"]),sd(tchunk$max_speed[tchunk$modal=="car"]),kurtosis(tchunk$max_speed[tchunk$modal=="car"]))
+
+hist(tchunk$max_speed[tchunk$modal=="car"], col="blue3", border="black", xlab="Valores", ylab="FrequÍncia", main="Histograma Velocidade M·xima (CAR)",xlim=c(0,35),ylim=c(0,35),breaks = 35)
+abline(v = c(mean(tchunk$max_speed[tchunk$modal=="car"]), median(tchunk$max_speed[tchunk$modal=="car"]), sd(tchunk$max_speed[tchunk$modal=="car"])),col = c("orange", "red", "green"),lwd = c(2,2,4),lty=c(1,2,3));
+
+legend(x="topright", #posicao da legenda
+c("MÈdia","Mediana","Desvio Padr„o"), #nomes da legenda
+col=c("orange","red","green"), #cores
+lty=c(1,2,3), #estilo da linha
+lwd=c(2,2,4)) #grossura das linhas
+
+boxplot(tchunk$max_speed[tchunk$modal=="car"], main="BoxPlot Velocidade M·xima (CAR)",col = "blue3")
+
+acf(tchunk$max_speed[tchunk$modal=="car"], main="FunÁ„o de AutocorrelaÁ„o para o modal (CAR)",col=c("blue3"),xlab="",ylab="AutocorrelaÁ„o",lwd=2)
+```
+
+#### Moto
+
+```{r, echo=FALSE}
+sprintf("M…TRICAS B¡SICAS - MÈdia: %.2f | Mediana: %.2f | Desvio Padr„o: %.2f | Curtose: %.2f",mean(tchunk$max_speed[tchunk$modal=="moto"]),median(tchunk$max_speed[tchunk$modal=="moto"]),sd(tchunk$max_speed[tchunk$modal=="moto"]),kurtosis(tchunk$max_speed[tchunk$modal=="moto"]))
+
+hist(tchunk$max_speed[tchunk$modal=="moto"], col="blue3", border="black", xlab="Valores", ylab="FrequÍncia", main="Histograma Velocidade M·xima (MOTO)",xlim=c(0,25),ylim=c(0,10),breaks = 40)
+
+abline(v = c(mean(tchunk$max_speed[tchunk$modal=="moto"]), median(tchunk$max_speed[tchunk$modal=="car"]), sd(tchunk$max_speed[tchunk$modal=="moto"])),col = c("orange", "red", "green"),lwd = c(2,2,4),lty=c(1,2,3));
+
+legend(x="topright", #posicao da legenda
+c("MÈdia","Mediana","Desvio Padr„o"), #nomes da legenda
+col=c("orange","red","green"), #cores
+lty=c(1,2,3), #estilo da linha
+lwd=c(2,2,4)) #grossura das linhas
+
+boxplot(tchunk$max_speed[tchunk$modal=="moto"], main="BoxPlot Velocidade M·xima (MOTO)",col = "blue3")
+
+acf(tchunk$max_speed[tchunk$modal=="moto"], main="FunÁ„o de AutocorrelaÁ„o para o modal (MOTO)",col=c("blue3"),xlab="",ylab="AutocorrelaÁ„o",lwd=2)
+```
+
+#### Walk
+
+```{r, echo=FALSE}
+sprintf("M…TRICAS B¡SICAS - MÈdia: %.2f | Mediana: %.2f | Desvio Padr„o: %.2f | Curtose: %.2f",mean(tchunk$max_speed[tchunk$modal=="walk"]),median(tchunk$max_speed[tchunk$modal=="walk"]),sd(tchunk$max_speed[tchunk$modal=="walk"]),kurtosis(tchunk$max_speed[tchunk$modal=="walk"]))
+
+hist(tchunk$max_speed[tchunk$modal=="walk"], col="blue3", border="black", xlab="Valores", ylab="FrequÍncia", main="Histograma Velocidade M·xima (WALK)",xlim=c(0,15),ylim=c(0,120),breaks = 40)
+
+abline(v = c(mean(tchunk$max_speed[tchunk$modal=="walk"]), median(tchunk$max_speed[tchunk$modal=="walk"]), sd(tchunk$max_speed[tchunk$modal=="walk"])),col = c("orange", "red", "green"),lwd = c(2,2,4),lty=c(1,2,3));
+
+legend(x="topright", #posicao da legenda
+c("MÈdia","Mediana","Desvio Padr„o"), #nomes da legenda
+col=c("orange","red","green"), #cores
+lty=c(1,2,3), #estilo da linha
+lwd=c(2,2,4)) #grossura das linhas
+
+boxplot(tchunk$max_speed[tchunk$modal=="walk"], main="BoxPlot Velocidade M·xima (WALK)",col = "blue3")
+
+acf(tchunk$max_speed[tchunk$modal=="walk"], main="FunÁ„o de AutocorrelaÁ„o para o modal (WALK)",col=c("blue3"),xlab="",ylab="AutocorrelaÁ„o",lwd=2)
+
+```
+
+
+###**AceleraÁ„o M·xima**
+
+MÈtricas e Gr·ficos para a AceleraÁ„o M·xima por cada modal. 
+
+#### Bike
+
+```{r, echo=FALSE}
+sprintf("M…TRICAS B¡SICAS - MÈdia: %.2f | Mediana: %.2f | Desvio Padr„o: %.2f | Curtose: %.2f",mean(tchunk$max_acceleration[tchunk$modal=="bike"]),median(tchunk$max_acceleration[tchunk$modal=="bike"]),sd(tchunk$max_acceleration[tchunk$modal=="bike"]),kurtosis(tchunk$max_acceleration[tchunk$modal=="bike"]))
+
+hist(tchunk$max_acceleration[tchunk$modal=="bike"], col="blue3", border="black", xlab="Valores", ylab="FrequÍncia", main="Histograma AceleraÁ„o M·xima (BIKE)",xlim=c(0,3),ylim=c(0,40),breaks = 30)
+
+abline(v = c(mean(tchunk$max_acceleration[tchunk$modal=="bike"]), median(tchunk$max_acceleration[tchunk$modal=="bike"]), sd(tchunk$max_acceleration[tchunk$modal=="bike"])),col = c("orange", "red", "green"),lwd = c(2,2,4),lty=c(1,2,3));
+
+legend(x="toprigh", #posicao da legenda
+c("MÈdia","Mediana","Desvio Padr„o"), #nomes da legenda
+col=c("orange","red","green"), #cores
+lty=c(1,2,3), #estilo da linha
+lwd=c(2,2,4)) #grossura das linhas
+
+boxplot(tchunk$max_acceleration[tchunk$modal=="bike"], main="BoxPlot AceleraÁ„o M·xima (BIKE)",col = "blue3")
+
+acf(tchunk$max_acceleration[tchunk$modal=="bike"], main="FunÁ„o de AutocorrelaÁ„o para o modal (BIKE)",col=c("blue3"),xlab="",ylab="AutocorrelaÁ„o",lwd=2)
+```
+
+#### Bus
+
+```{r, echo=FALSE}
+sprintf("M…TRICAS B¡SICAS - MÈdia: %.2f | Mediana: %.2f | Desvio Padr„o: %.2f | Curtose: %.2f",mean(tchunk$max_acceleration[tchunk$modal=="bus"]),median(tchunk$max_acceleration[tchunk$modal=="bus"]),sd(tchunk$max_acceleration[tchunk$modal=="bus"]),kurtosis(tchunk$max_acceleration[tchunk$modal=="bus"]))
+
+hist(tchunk$max_acceleration[tchunk$modal=="bus"], col="blue3", border="black", xlab="Valores", ylab="FrequÍncia", main="Histograma AceleraÁ„o M·xima (BUS)",xlim=c(0,4),ylim=c(0,8),breaks = 30)
+abline(v = c(mean(tchunk$max_acceleration[tchunk$modal=="bus"]), median(tchunk$max_acceleration[tchunk$modal=="bus"]), sd(tchunk$max_acceleration[tchunk$modal=="bus"])),col = c("orange", "red", "green"),lwd = c(2,2,4),lty=c(1,2,3));
+
+legend(x="topright", #posicao da legenda
+c("MÈdia","Mediana","Desvio Padr„o"), #nomes da legenda
+col=c("orange","red","green"), #cores
+lty=c(1,2,3), #estilo da linha
+lwd=c(2,2,4)) #grossura das linhas
+
+boxplot(tchunk$max_acceleration[tchunk$modal=="bus"], main="BoxPlot AceleraÁ„o M·xima (BUS)",col = "blue3")
+
+acf(tchunk$max_acceleration[tchunk$modal=="bus"], main="FunÁ„o de AutocorrelaÁ„o para o modal (BUS)",col=c("blue3"),xlab="",ylab="AutocorrelaÁ„o",lwd=2)
+```
+
+#### Car
+
+```{r, echo=FALSE}
+sprintf("M…TRICAS B¡SICAS - MÈdia: %.2f | Mediana: %.2f | Desvio Padr„o: %.2f | Curtose: %.2f",mean(tchunk$max_acceleration[tchunk$modal=="car"]),median(tchunk$max_acceleration[tchunk$modal=="car"]),sd(tchunk$max_acceleration[tchunk$modal=="car"]),kurtosis(tchunk$max_acceleration[tchunk$modal=="car"]))
+
+
+hist(tchunk$max_acceleration[tchunk$modal=="car"], col="blue3", border="black", xlab="Valores", ylab="FrequÍncia", main="Histograma AceleraÁ„o M·xima (CAR)",xlim=c(0,12),ylim=c(0,100),breaks = 35)
+abline(v = c(mean(tchunk$max_acceleration[tchunk$modal=="car"]), median(tchunk$max_acceleration[tchunk$modal=="car"]), sd(tchunk$max_acceleration[tchunk$modal=="car"])),col = c("orange", "red", "green"),lwd = c(2,2,4),lty=c(1,2,3));
+
+legend(x="topright", #posicao da legenda
+c("MÈdia","Mediana","Desvio Padr„o"), #nomes da legenda
+col=c("orange","red","green"), #cores
+lty=c(1,2,3), #estilo da linha
+lwd=c(2,2,4)) #grossura das linhas
+
+boxplot(tchunk$max_acceleration[tchunk$modal=="car"], main="BoxPlot AceleraÁ„o M·xima (CAR)",col = "blue3")
+
+acf(tchunk$max_acceleration[tchunk$modal=="car"], main="FunÁ„o de AutocorrelaÁ„o para o modal (CAR)",col=c("blue3"),xlab="",ylab="AutocorrelaÁ„o",lwd=2)
+```
+
+#### Moto
+
+```{r, echo=FALSE}
+sprintf("M…TRICAS B¡SICAS - MÈdia: %.2f | Mediana: %.2f | Desvio Padr„o: %.2f | Curtose: %.2f",mean(tchunk$max_acceleration[tchunk$modal=="moto"]),median(tchunk$max_acceleration[tchunk$modal=="moto"]),sd(tchunk$max_acceleration[tchunk$modal=="moto"]),kurtosis(tchunk$max_acceleration[tchunk$modal=="moto"]))
+
+hist(tchunk$max_acceleration[tchunk$modal=="moto"], col="blue3", border="black", xlab="Valores", ylab="FrequÍncia", main="Histograma AceleraÁ„o M·xima (MOTO)",xlim=c(0,8),ylim=c(0,15),breaks = 40)
+
+abline(v = c(mean(tchunk$max_acceleration[tchunk$modal=="moto"]), median(tchunk$max_acceleration[tchunk$modal=="car"]), sd(tchunk$max_acceleration[tchunk$modal=="moto"])),col = c("orange", "red", "green"),lwd = c(2,2,4),lty=c(1,2,3));
+
+legend(x="topright", #posicao da legenda
+c("MÈdia","Mediana","Desvio Padr„o"), #nomes da legenda
+col=c("orange","red","green"), #cores
+lty=c(1,2,3), #estilo da linha
+lwd=c(2,2,4)) #grossura das linhas
+
+boxplot(tchunk$max_acceleration[tchunk$modal=="moto"], main="BoxPlot AceleraÁ„o M·xima (MOTO)",col = "blue3")
+
+acf(tchunk$max_acceleration[tchunk$modal=="moto"], main="FunÁ„o de AutocorrelaÁ„o para o modal (MOTO)",col=c("blue3"),xlab="",ylab="AutocorrelaÁ„o",lwd=2)
+```
+
+#### Walk
+
+```{r, echo=FALSE}
+sprintf("M…TRICAS B¡SICAS - MÈdia: %.2f | Mediana: %.2f | Desvio Padr„o: %.2f | Curtose: %.2f",mean(tchunk$max_acceleration[tchunk$modal=="walk"]),median(tchunk$max_acceleration[tchunk$modal=="walk"]),sd(tchunk$max_acceleration[tchunk$modal=="walk"]),kurtosis(tchunk$max_acceleration[tchunk$modal=="walk"]))
+
+hist(tchunk$max_acceleration[tchunk$modal=="walk"], col="blue3", border="black", xlab="Valores", ylab="FrequÍncia", main="Histograma AceleraÁ„o M·xima (WALK)",xlim=c(0,3),ylim=c(0,25),breaks = 40)
+
+abline(v = c(mean(tchunk$max_acceleration[tchunk$modal=="walk"]), median(tchunk$max_acceleration[tchunk$modal=="walk"]), sd(tchunk$max_acceleration[tchunk$modal=="walk"])),col = c("orange", "red", "green"),lwd = c(2,2,4),lty=c(1,2,3));
+
+legend(x="topright", #posicao da legenda
+c("MÈdia","Mediana","Desvio Padr„o"), #nomes da legenda
+col=c("orange","red","green"), #cores
+lty=c(1,2,3), #estilo da linha
+lwd=c(2,2,4)) #grossura das linhas
+
+boxplot(tchunk$max_acceleration[tchunk$modal=="walk"], main="BoxPlot AceleraÁ„o M·xima (WALK)",col = "blue3")
+
+acf(tchunk$max_acceleration[tchunk$modal=="walk"], main="FunÁ„o de AutocorrelaÁ„o para o modal (WALK)",col=c("blue3"),xlab="",ylab="AutocorrelaÁ„o",lwd=2)
+
+```
+
+
+###**Tempo de parada (Stop)**
+Nesta seÁ„o selecionamos as mÈtricas para o tempo de parada total
+
+
+#### Bike
+
+```{r, echo=FALSE}
+sprintf("M…TRICAS B¡SICAS - MÈdia: %.2f | Mediana: %.2f | Desvio Padr„o: %.2f | Curtose: %.2f",mean(tchunk$stop_time[tchunk$modal=="bike"]),median(tchunk$stop_time[tchunk$modal=="bike"]),sd(tchunk$stop_time[tchunk$modal=="bike"]),kurtosis(tchunk$stop_time[tchunk$modal=="bike"]))
+
+hist(tchunk$stop_time[tchunk$modal=="bike"], col="blue3", border="black", xlab="Valores", ylab="FrequÍncia", main="Histograma do tempo de parada (BIKE)",xlim=c(0,100),ylim=c(0,120),breaks = 30)
+
+abline(v = c(mean(tchunk$stop_time[tchunk$modal=="bike"]), median(tchunk$stop_time[tchunk$modal=="bike"]), sd(tchunk$stop_time[tchunk$modal=="bike"])),col = c("orange", "red", "green"),lwd = c(2,2,4),lty=c(1,2,3));
+
+legend(x="toprigh", #posicao da legenda
+c("MÈdia","Mediana","Desvio Padr„o"), #nomes da legenda
+col=c("orange","red","green"), #cores
+lty=c(1,2,3), #estilo da linha
+lwd=c(2,2,4)) #grossura das linhas
+
+boxplot(tchunk$stop_time[tchunk$modal=="bike"], main="BoxPlot do tempo de parada (BIKE)",col = "blue3")
+
+acf(tchunk$stop_time[tchunk$modal=="bike"], main="FunÁ„o de AutocorrelaÁ„o para o modal (BIKE)",col=c("blue3"),xlab="",ylab="AutocorrelaÁ„o",lwd=2)
+
+```
+
+#### Bus
+
+```{r, echo=FALSE}
+sprintf("M…TRICAS B¡SICAS - MÈdia: %.2f | Mediana: %.2f | Desvio Padr„o: %.2f | Curtose: %.2f",mean(tchunk$stop_time[tchunk$modal=="bus"]),median(tchunk$stop_time[tchunk$modal=="bus"]),sd(tchunk$stop_time[tchunk$modal=="bus"]),kurtosis(tchunk$stop_time[tchunk$modal=="bus"]))
+
+hist(tchunk$stop_time[tchunk$modal=="bus"], col="blue3", border="black", xlab="Valores", ylab="FrequÍncia", main="Histograma do tempo de parada (BUS)",xlim=c(0,60),ylim=c(0,15),breaks = 30)
+abline(v = c(mean(tchunk$stop_time[tchunk$modal=="bus"]), median(tchunk$stop_time[tchunk$modal=="bus"]), sd(tchunk$stop_time[tchunk$modal=="bus"])),col = c("orange", "red", "green"),lwd = c(2,2,4),lty=c(1,2,3));
+
+legend(x="topright", #posicao da legenda
+c("MÈdia","Mediana","Desvio Padr„o"), #nomes da legenda
+col=c("orange","red","green"), #cores
+lty=c(1,2,3), #estilo da linha
+lwd=c(2,2,4)) #grossura das linhas
+
+boxplot(tchunk$stop_time[tchunk$modal=="bus"], main="BoxPlot do tempo de parada (BUS)",col = "blue3")
+
+acf(tchunk$stop_time[tchunk$modal=="bus"], main="FunÁ„o de AutocorrelaÁ„o para o modal (BUS)",col=c("blue3"),xlab="",ylab="AutocorrelaÁ„o",lwd=2)
+```
+
+#### Car
+
+```{r, echo=FALSE}
+sprintf("M…TRICAS B¡SICAS - MÈdia: %.2f | Mediana: %.2f | Desvio Padr„o: %.2f | Curtose: %.2f",mean(tchunk$stop_time[tchunk$modal=="car"]),median(tchunk$stop_time[tchunk$modal=="car"]),sd(tchunk$stop_time[tchunk$modal=="car"]),kurtosis(tchunk$stop_time[tchunk$modal=="car"]))
+
+
+hist(tchunk$stop_time[tchunk$modal=="car"], col="blue3", border="black", xlab="Valores", ylab="FrequÍncia", main="Histograma do tempo de parada (CAR)",xlim=c(0,60),ylim=c(0,100),breaks = 30)
+abline(v = c(mean(tchunk$stop_time[tchunk$modal=="car"]), median(tchunk$stop_time[tchunk$modal=="car"]), sd(tchunk$stop_time[tchunk$modal=="car"])),col = c("orange", "red", "green"),lwd = c(2,2,4),lty=c(1,2,3));
+
+legend(x="topright", #posicao da legenda
+c("MÈdia","Mediana","Desvio Padr„o"), #nomes da legenda
+col=c("orange","red","green"), #cores
+lty=c(1,2,3), #estilo da linha
+lwd=c(2,2,4)) #grossura das linhas
+
+boxplot(tchunk$stop_time[tchunk$modal=="car"], main="BoxPlot do tempo de parada (CAR)",col = "blue3")
+
+acf(tchunk$stop_time[tchunk$modal=="car"], main="FunÁ„o de AutocorrelaÁ„o para o modal (CAR)",col=c("blue3"),xlab="",ylab="AutocorrelaÁ„o",lwd=2)
+```
+
+#### Moto
+
+```{r, echo=FALSE}
+sprintf("M…TRICAS B¡SICAS - MÈdia: %.2f | Mediana: %.2f | Desvio Padr„o: %.2f | Curtose: %.2f",mean(tchunk$stop_time[tchunk$modal=="moto"]),median(tchunk$stop_time[tchunk$modal=="moto"]),sd(tchunk$stop_time[tchunk$modal=="moto"]),kurtosis(tchunk$stop_time[tchunk$modal=="moto"]))
+
+hist(tchunk$stop_time[tchunk$modal=="moto"], col="blue3", border="black", xlab="Valores", ylab="FrequÍncia", main="Histograma do tempo de parada (MOTO)",xlim=c(0,70),ylim=c(0,50),breaks = 40)
+
+abline(v = c(mean(tchunk$stop_time[tchunk$modal=="moto"]), median(tchunk$stop_time[tchunk$modal=="car"]), sd(tchunk$stop_time[tchunk$modal=="moto"])),col = c("orange", "red", "green"),lwd = c(2,2,4),lty=c(1,2,3));
+
+legend(x="topright", #posicao da legenda
+c("MÈdia","Mediana","Desvio Padr„o"), #nomes da legenda
+col=c("orange","red","green"), #cores
+lty=c(1,2,3), #estilo da linha
+lwd=c(2,2,4)) #grossura das linhas
+
+boxplot(tchunk$stop_time[tchunk$modal=="moto"], main="BoxPlot do tempo de parada (MOTO)",col = "blue3")
+
+acf(tchunk$stop_time[tchunk$modal=="moto"], main="FunÁ„o de AutocorrelaÁ„o para o modal (MOTO)",col=c("blue3"),xlab="",ylab="AutocorrelaÁ„o",lwd=2)
+```
+
+#### Walk
+
+```{r, echo=FALSE}
+sprintf("M…TRICAS B¡SICAS - MÈdia: %.2f | Mediana: %.2f | Desvio Padr„o: %.2f | Curtose: %.2f",mean(tchunk$stop_time[tchunk$modal=="walk"]),median(tchunk$stop_time[tchunk$modal=="walk"]),sd(tchunk$stop_time[tchunk$modal=="walk"]),kurtosis(tchunk$stop_time[tchunk$modal=="walk"]))
+
+hist(tchunk$stop_time[tchunk$modal=="walk"], col="blue3", border="black", xlab="Valores", ylab="FrequÍncia", main="Histograma do tempo de parada (WALK)",xlim=c(0,90),ylim=c(0,60),breaks = 40)
+
+abline(v = c(mean(tchunk$stop_time[tchunk$modal=="walk"]), median(tchunk$stop_time[tchunk$modal=="walk"]), sd(tchunk$stop_time[tchunk$modal=="walk"])),col = c("orange", "red", "green"),lwd = c(2,2,4),lty=c(1,2,3));
+
+legend(x="topright", #posicao da legenda
+c("MÈdia","Mediana","Desvio Padr„o"), #nomes da legenda
+col=c("orange","red","green"), #cores
+lty=c(1,2,3), #estilo da linha
+lwd=c(2,2,4)) #grossura das linhas
+
+boxplot(tchunk$stop_time[tchunk$modal=="walk"], main="BoxPlot do tempo de parada (WALK)",col = "blue3")
+
+acf(tchunk$stop_time[tchunk$modal=="walk"], main="FunÁ„o de AutocorrelaÁ„o para o modal (WALK)",col=c("blue3"),xlab="",ylab="AutocorrelaÁ„o",lwd=2)
+
+```
+
+###**MudanÁa de Curso**
+
+Nesta seÁ„o selecionamos as mÈtricas para as mudanÁas de curso percebidas para cada modal. 
+
+#### Bike
+
+```{r, echo=FALSE}
+sprintf("M…TRICAS B¡SICAS - MÈdia: %.2f | Mediana: %.2f | Desvio Padr„o: %.2f | Curtose: %.2f",mean(tchunk$course_changes[tchunk$modal=="bike"]),median(tchunk$course_changes[tchunk$modal=="bike"]),sd(tchunk$course_changes[tchunk$modal=="bike"]),kurtosis(tchunk$course_changes[tchunk$modal=="bike"]))
+
+hist(tchunk$course_changes[tchunk$modal=="bike"], col="blue3", border="black", xlab="Valores", ylab="FrequÍncia", main="Histograma para a mudanÁa de cursos do modal (BIKE)",xlim=c(0,60),ylim=c(0,30),breaks = 30)
+
+abline(v = c(mean(tchunk$course_changes[tchunk$modal=="bike"]), median(tchunk$course_changes[tchunk$modal=="bike"]), sd(tchunk$course_changes[tchunk$modal=="bike"])),col = c("orange", "red", "green"),lwd = c(2,2,4),lty=c(1,2,3));
+
+legend(x="toprigh", #posicao da legenda
+c("MÈdia","Mediana","Desvio Padr„o"), #nomes da legenda
+col=c("orange","red","green"), #cores
+lty=c(1,2,3), #estilo da linha
+lwd=c(2,2,4)) #grossura das linhas
+
+boxplot(tchunk$course_changes[tchunk$modal=="bike"], main="BoxPlot para as mudanÁas de curso do modal (BIKE)",col = "blue3")
+
+acf(tchunk$course_changes[tchunk$modal=="bike"], main="FunÁ„o de AutocorrelaÁ„o para o modal (BIKE)",col=c("blue3"),xlab="",ylab="AutocorrelaÁ„o",lwd=2)
+
+```
+
+#### Bus
+
+```{r, echo=FALSE}
+sprintf("M…TRICAS B¡SICAS - MÈdia: %.2f | Mediana: %.2f | Desvio Padr„o: %.2f | Curtose: %.2f",mean(tchunk$course_changes[tchunk$modal=="bus"]),median(tchunk$course_changes[tchunk$modal=="bus"]),sd(tchunk$course_changes[tchunk$modal=="bus"]),kurtosis(tchunk$course_changes[tchunk$modal=="bus"]))
+
+hist(tchunk$course_changes[tchunk$modal=="bus"], col="blue3", border="black", xlab="Valores", ylab="FrequÍncia", main="Histograma para a mudanÁa de cursos do modal (BUS)",xlim=c(0,20),ylim=c(0,30),breaks = 20)
+abline(v = c(mean(tchunk$course_changes[tchunk$modal=="bus"]), median(tchunk$course_changes[tchunk$modal=="bus"]), sd(tchunk$course_changes[tchunk$modal=="bus"])),col = c("orange", "red", "green"),lwd = c(2,2,4),lty=c(1,2,3));
+
+legend(x="topright", #posicao da legenda
+c("MÈdia","Mediana","Desvio Padr„o"), #nomes da legenda
+col=c("orange","red","green"), #cores
+lty=c(1,2,3), #estilo da linha
+lwd=c(2,2,4)) #grossura das linhas
+
+boxplot(tchunk$course_changes[tchunk$modal=="bus"], main="BoxPlot para as mudanÁas de curso do modal (BUS)",col = "blue3")
+
+acf(tchunk$course_changes[tchunk$modal=="bus"], main="FunÁ„o de AutocorrelaÁ„o para o modal (BUS)",col=c("blue3"),xlab="",ylab="AutocorrelaÁ„o",lwd=2)
+```
+
+#### Car
+
+```{r, echo=FALSE}
+sprintf("M…TRICAS B¡SICAS - MÈdia: %.2f | Mediana: %.2f | Desvio Padr„o: %.2f | Curtose: %.2f",mean(tchunk$course_changes[tchunk$modal=="car"]),median(tchunk$course_changes[tchunk$modal=="car"]),sd(tchunk$course_changes[tchunk$modal=="car"]),kurtosis(tchunk$course_changes[tchunk$modal=="car"]))
+
+
+hist(tchunk$course_changes[tchunk$modal=="car"], col="blue3", border="black", xlab="Valores", ylab="FrequÍncia", main="Histograma para a mudanÁa de cursos do modal (CAR)",xlim=c(0,40),ylim=c(0,100),breaks = 30)
+abline(v = c(mean(tchunk$course_changes[tchunk$modal=="car"]), median(tchunk$course_changes[tchunk$modal=="car"]), sd(tchunk$course_changes[tchunk$modal=="car"])),col = c("orange", "red", "green"),lwd = c(2,2,4),lty=c(1,2,3));
+
+legend(x="topright", #posicao da legenda
+c("MÈdia","Mediana","Desvio Padr„o"), #nomes da legenda
+col=c("orange","red","green"), #cores
+lty=c(1,2,3), #estilo da linha
+lwd=c(2,2,4)) #grossura das linhas
+
+boxplot(tchunk$course_changes[tchunk$modal=="car"], main="BoxPlot para as mudanÁas de curso do modal (CAR)",col = "blue3")
+
+acf(tchunk$course_changes[tchunk$modal=="car"], main="FunÁ„o de AutocorrelaÁ„o para o modal (CAR)",col=c("blue3"),xlab="",ylab="AutocorrelaÁ„o",lwd=2)
+```
+
+#### Moto
+
+```{r, echo=FALSE}
+sprintf("M…TRICAS B¡SICAS - MÈdia: %.2f | Mediana: %.2f | Desvio Padr„o: %.2f | Curtose: %.2f",mean(tchunk$course_changes[tchunk$modal=="moto"]),median(tchunk$course_changes[tchunk$modal=="moto"]),sd(tchunk$course_changes[tchunk$modal=="moto"]),kurtosis(tchunk$course_changes[tchunk$modal=="moto"]))
+
+hist(tchunk$course_changes[tchunk$modal=="moto"], col="blue3", border="black", xlab="Valores", ylab="FrequÍncia", main="Histograma para a mudanÁa de cursos do modal (MOTO)",xlim=c(0,70),ylim=c(0,40),breaks = 35)
+
+abline(v = c(mean(tchunk$course_changes[tchunk$modal=="moto"]), median(tchunk$course_changes[tchunk$modal=="car"]), sd(tchunk$course_changes[tchunk$modal=="moto"])),col = c("orange", "red", "green"),lwd = c(2,2,4),lty=c(1,2,3));
+
+legend(x="topright", #posicao da legenda
+c("MÈdia","Mediana","Desvio Padr„o"), #nomes da legenda
+col=c("orange","red","green"), #cores
+lty=c(1,2,3), #estilo da linha
+lwd=c(2,2,4)) #grossura das linhas
+
+boxplot(tchunk$course_changes[tchunk$modal=="moto"], main="BoxPlot para as mudanÁas de curso do modal (MOTO)",col = "blue3")
+
+acf(tchunk$course_changes[tchunk$modal=="moto"], main="FunÁ„o de AutocorrelaÁ„o para o modal (MOTO)",col=c("blue3"),xlab="",ylab="AutocorrelaÁ„o",lwd=2)
+```
+
+#### Walk
+
+```{r, echo=FALSE}
+sprintf("M…TRICAS B¡SICAS - MÈdia: %.2f | Mediana: %.2f | Desvio Padr„o: %.2f | Curtose: %.2f",mean(tchunk$course_changes[tchunk$modal=="walk"]),median(tchunk$course_changes[tchunk$modal=="walk"]),sd(tchunk$course_changes[tchunk$modal=="walk"]),kurtosis(tchunk$course_changes[tchunk$modal=="walk"]))
+
+hist(tchunk$course_changes[tchunk$modal=="walk"], col="blue3", border="black", xlab="Valores", ylab="FrequÍncia", main="Histograma para a mudanÁa de cursos do modal (WALK)",xlim=c(0,60),ylim=c(0,30),breaks = 40)
+
+abline(v = c(mean(tchunk$course_changes[tchunk$modal=="walk"]), median(tchunk$course_changes[tchunk$modal=="walk"]), sd(tchunk$course_changes[tchunk$modal=="walk"])),col = c("orange", "red", "green"),lwd = c(2,2,4),lty=c(1,2,3));
+
+legend(x="topright", #posicao da legenda
+c("MÈdia","Mediana","Desvio Padr„o"), #nomes da legenda
+col=c("orange","red","green"), #cores
+lty=c(1,2,3), #estilo da linha
+lwd=c(2,2,4)) #grossura das linhas
+
+boxplot(tchunk$course_changes[tchunk$modal=="walk"], main="BoxPlot para as mudanÁas de curso do modal (WALK)",col = "blue3")
+
+acf(tchunk$course_changes[tchunk$modal=="walk"], main="FunÁ„o de AutocorrelaÁ„o para o modal (WALK)",col=c("blue3"),xlab="",ylab="AutocorrelaÁ„o",lwd=2)
+
+```
+
+
+##**An·lise em Conjunto**
+
+Nesta seÁ„o analisaremos algumas vari·veis, no respectivo modal, em conjunto, s„o elas:
+
+1. Velocidade mÈdia e Velocidade M·xima ($V_{med}$ x $V_{max}$)
+2. Velocidade mÈdia e AceleraÁ„o M·xima ($V_{med}$ x $a_{m·x}$)
+3. Tempo de parada e MudanÁas realizadas ($T_{stop}$ x $M_{change}$)
+
+
+###Covari‚ncia
+####Modal (Bike)
+
+```{r, echo=FALSE}
+sprintf("Covari‚ncia (Velocidade MÈdia,Velocidade M·xima): %.2f",cov(tchunk$mean_speed[tchunk$modal=="bike"],tchunk$max_speed[tchunk$modal=="bike"]))
+
+sprintf("CorrelaÁ„o (Velocidade MÈdia,Velocidade M·xima): %.2f",cor(tchunk$mean_speed[tchunk$modal=="bike"],tchunk$max_speed[tchunk$modal=="bike"]))
+
+```
+
+
+#ReferÍncias
+
+[Quintella 2013] Dissertacao Quintella\
+Livro de R\
+[Tukey 1977] Livro Tukey\
+
+
+#Conclusıes
+
+A ser Realizado
+
+
+
