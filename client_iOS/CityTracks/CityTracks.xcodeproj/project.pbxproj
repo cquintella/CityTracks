@@ -1,0 +1,532 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		423B6BD2148543C400B15133 /* CTConfigViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 423B6BD1148543C400B15133 /* CTConfigViewController.m */; };
+		42431FE014C589F400105232 /* CTCommunicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 42431FDF14C589F400105232 /* CTCommunicator.m */; };
+		42431FE414C58A0F00105232 /* CTLocationDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 42431FE314C58A0F00105232 /* CTLocationDB.m */; };
+		428AB0781485692F004B5E90 /* CTManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 428AB0771485692F004B5E90 /* CTManager.m */; };
+		429A302914852847002F70BE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 429A302814852847002F70BE /* UIKit.framework */; };
+		429A302B14852847002F70BE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 429A302A14852847002F70BE /* Foundation.framework */; };
+		429A302D14852847002F70BE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 429A302C14852847002F70BE /* CoreGraphics.framework */; };
+		429A303314852847002F70BE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 429A303114852847002F70BE /* InfoPlist.strings */; };
+		429A303514852847002F70BE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 429A303414852847002F70BE /* main.m */; };
+		429A303914852847002F70BE /* CTAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 429A303814852847002F70BE /* CTAppDelegate.m */; };
+		429A303C14852847002F70BE /* MainStoryboard_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 429A303A14852847002F70BE /* MainStoryboard_iPhone.storyboard */; };
+		429A303F14852847002F70BE /* MainStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 429A303D14852847002F70BE /* MainStoryboard_iPad.storyboard */; };
+		429A304214852847002F70BE /* CTViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 429A304114852847002F70BE /* CTViewController.m */; };
+		429A304A14852847002F70BE /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 429A304914852847002F70BE /* SenTestingKit.framework */; };
+		429A304B14852847002F70BE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 429A302814852847002F70BE /* UIKit.framework */; };
+		429A304C14852847002F70BE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 429A302A14852847002F70BE /* Foundation.framework */; };
+		429A305414852847002F70BE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 429A305214852847002F70BE /* InfoPlist.strings */; };
+		429A305714852847002F70BE /* CityTracksTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 429A305614852847002F70BE /* CityTracksTests.m */; };
+		429A306114852863002F70BE /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 429A306014852863002F70BE /* MapKit.framework */; };
+		429A30631485286D002F70BE /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 429A30621485286D002F70BE /* CoreLocation.framework */; };
+		42C8EF8314C7182800F72337 /* NSString+MD5Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 42C8EF8014C7182800F72337 /* NSString+MD5Addition.m */; };
+		42C8EF8414C7182800F72337 /* UIDevice+IdentifierAddition.m in Sources */ = {isa = PBXBuildFile; fileRef = 42C8EF8214C7182800F72337 /* UIDevice+IdentifierAddition.m */; };
+		42EA647B1487DEFD00DED7DE /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 42EA647A1487DEFD00DED7DE /* Settings.bundle */; };
+		42EFEF0C14D16E5E00714109 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42EFEF0B14D16E5E00714109 /* SystemConfiguration.framework */; };
+		42F1F42F1485834C00A17A56 /* config.png in Resources */ = {isa = PBXBuildFile; fileRef = 42F1F42E1485834C00A17A56 /* config.png */; };
+		42F1F4321485843700A17A56 /* compass.png in Resources */ = {isa = PBXBuildFile; fileRef = 42F1F4311485843700A17A56 /* compass.png */; };
+		42FA0B38148563840036A327 /* CityTraces57.png in Resources */ = {isa = PBXBuildFile; fileRef = 42FA0B37148563840036A327 /* CityTraces57.png */; };
+		42FA0B3B148563C10036A327 /* CityTraces114.png in Resources */ = {isa = PBXBuildFile; fileRef = 42FA0B3A148563C10036A327 /* CityTraces114.png */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		429A304D14852847002F70BE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 429A301B14852844002F70BE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 429A302314852846002F70BE;
+			remoteInfo = CityTracks;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		423B6BD0148543C400B15133 /* CTConfigViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTConfigViewController.h; sourceTree = "<group>"; };
+		423B6BD1148543C400B15133 /* CTConfigViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CTConfigViewController.m; sourceTree = "<group>"; };
+		42431FDE14C589F400105232 /* CTCommunicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTCommunicator.h; sourceTree = "<group>"; };
+		42431FDF14C589F400105232 /* CTCommunicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CTCommunicator.m; sourceTree = "<group>"; };
+		42431FE214C58A0F00105232 /* CTLocationDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTLocationDB.h; sourceTree = "<group>"; };
+		42431FE314C58A0F00105232 /* CTLocationDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CTLocationDB.m; sourceTree = "<group>"; };
+		428AB0761485692F004B5E90 /* CTManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTManager.h; sourceTree = "<group>"; };
+		428AB0771485692F004B5E90 /* CTManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CTManager.m; sourceTree = "<group>"; };
+		429A302414852846002F70BE /* CityTracks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CityTracks.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		429A302814852847002F70BE /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		429A302A14852847002F70BE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		429A302C14852847002F70BE /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		429A303014852847002F70BE /* CityTracks-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CityTracks-Info.plist"; sourceTree = "<group>"; };
+		429A303214852847002F70BE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		429A303414852847002F70BE /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		429A303614852847002F70BE /* CityTracks-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CityTracks-Prefix.pch"; sourceTree = "<group>"; };
+		429A303714852847002F70BE /* CTAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CTAppDelegate.h; sourceTree = "<group>"; };
+		429A303814852847002F70BE /* CTAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CTAppDelegate.m; sourceTree = "<group>"; };
+		429A303B14852847002F70BE /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPhone.storyboard; sourceTree = "<group>"; };
+		429A303E14852847002F70BE /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPad.storyboard; sourceTree = "<group>"; };
+		429A304014852847002F70BE /* CTViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CTViewController.h; sourceTree = "<group>"; };
+		429A304114852847002F70BE /* CTViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CTViewController.m; sourceTree = "<group>"; };
+		429A304814852847002F70BE /* CityTracksTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CityTracksTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		429A304914852847002F70BE /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		429A305114852847002F70BE /* CityTracksTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CityTracksTests-Info.plist"; sourceTree = "<group>"; };
+		429A305314852847002F70BE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		429A305514852847002F70BE /* CityTracksTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CityTracksTests.h; sourceTree = "<group>"; };
+		429A305614852847002F70BE /* CityTracksTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CityTracksTests.m; sourceTree = "<group>"; };
+		429A306014852863002F70BE /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		429A30621485286D002F70BE /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		42C8EF7F14C7182800F72337 /* NSString+MD5Addition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MD5Addition.h"; sourceTree = "<group>"; };
+		42C8EF8014C7182800F72337 /* NSString+MD5Addition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MD5Addition.m"; sourceTree = "<group>"; };
+		42C8EF8114C7182800F72337 /* UIDevice+IdentifierAddition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+IdentifierAddition.h"; sourceTree = "<group>"; };
+		42C8EF8214C7182800F72337 /* UIDevice+IdentifierAddition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+IdentifierAddition.m"; sourceTree = "<group>"; };
+		42EA647A1487DEFD00DED7DE /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		42EFEF0B14D16E5E00714109 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		42EFEF1914D2CF4600714109 /* CTErrorCodes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTErrorCodes.h; sourceTree = "<group>"; };
+		42F1F42E1485834C00A17A56 /* config.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = config.png; sourceTree = "<group>"; };
+		42F1F4311485843700A17A56 /* compass.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = compass.png; sourceTree = "<group>"; };
+		42FA0B37148563840036A327 /* CityTraces57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CityTraces57.png; path = ../CityTraces57.png; sourceTree = "<group>"; };
+		42FA0B3A148563C10036A327 /* CityTraces114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CityTraces114.png; path = ../CityTraces114.png; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		429A302114852846002F70BE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				42EFEF0C14D16E5E00714109 /* SystemConfiguration.framework in Frameworks */,
+				429A30631485286D002F70BE /* CoreLocation.framework in Frameworks */,
+				429A306114852863002F70BE /* MapKit.framework in Frameworks */,
+				429A302914852847002F70BE /* UIKit.framework in Frameworks */,
+				429A302B14852847002F70BE /* Foundation.framework in Frameworks */,
+				429A302D14852847002F70BE /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		429A304414852847002F70BE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				429A304A14852847002F70BE /* SenTestingKit.framework in Frameworks */,
+				429A304B14852847002F70BE /* UIKit.framework in Frameworks */,
+				429A304C14852847002F70BE /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		429A301914852844002F70BE = {
+			isa = PBXGroup;
+			children = (
+				429A302E14852847002F70BE /* CityTracks */,
+				429A304F14852847002F70BE /* CityTracksTests */,
+				429A302714852847002F70BE /* Frameworks */,
+				429A302514852846002F70BE /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		429A302514852846002F70BE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				429A302414852846002F70BE /* CityTracks.app */,
+				429A304814852847002F70BE /* CityTracksTests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		429A302714852847002F70BE /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				42EFEF0B14D16E5E00714109 /* SystemConfiguration.framework */,
+				429A30621485286D002F70BE /* CoreLocation.framework */,
+				429A306014852863002F70BE /* MapKit.framework */,
+				429A302814852847002F70BE /* UIKit.framework */,
+				429A302A14852847002F70BE /* Foundation.framework */,
+				429A302C14852847002F70BE /* CoreGraphics.framework */,
+				429A304914852847002F70BE /* SenTestingKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		429A302E14852847002F70BE /* CityTracks */ = {
+			isa = PBXGroup;
+			children = (
+				429A303714852847002F70BE /* CTAppDelegate.h */,
+				429A303814852847002F70BE /* CTAppDelegate.m */,
+				42EFEF1914D2CF4600714109 /* CTErrorCodes.h */,
+				429A303A14852847002F70BE /* MainStoryboard_iPhone.storyboard */,
+				429A303D14852847002F70BE /* MainStoryboard_iPad.storyboard */,
+				429A304014852847002F70BE /* CTViewController.h */,
+				429A304114852847002F70BE /* CTViewController.m */,
+				423B6BD0148543C400B15133 /* CTConfigViewController.h */,
+				423B6BD1148543C400B15133 /* CTConfigViewController.m */,
+				429A302F14852847002F70BE /* Supporting Files */,
+				428AB0761485692F004B5E90 /* CTManager.h */,
+				428AB0771485692F004B5E90 /* CTManager.m */,
+				42431FE214C58A0F00105232 /* CTLocationDB.h */,
+				42431FE314C58A0F00105232 /* CTLocationDB.m */,
+				42C8EF7F14C7182800F72337 /* NSString+MD5Addition.h */,
+				42C8EF8014C7182800F72337 /* NSString+MD5Addition.m */,
+				42C8EF8114C7182800F72337 /* UIDevice+IdentifierAddition.h */,
+				42C8EF8214C7182800F72337 /* UIDevice+IdentifierAddition.m */,
+				42431FDE14C589F400105232 /* CTCommunicator.h */,
+				42431FDF14C589F400105232 /* CTCommunicator.m */,
+			);
+			path = CityTracks;
+			sourceTree = "<group>";
+		};
+		429A302F14852847002F70BE /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				42F1F4311485843700A17A56 /* compass.png */,
+				42FA0B3A148563C10036A327 /* CityTraces114.png */,
+				42F1F42E1485834C00A17A56 /* config.png */,
+				42FA0B37148563840036A327 /* CityTraces57.png */,
+				429A303014852847002F70BE /* CityTracks-Info.plist */,
+				42EA647A1487DEFD00DED7DE /* Settings.bundle */,
+				429A303114852847002F70BE /* InfoPlist.strings */,
+				429A303414852847002F70BE /* main.m */,
+				429A303614852847002F70BE /* CityTracks-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		429A304F14852847002F70BE /* CityTracksTests */ = {
+			isa = PBXGroup;
+			children = (
+				429A305514852847002F70BE /* CityTracksTests.h */,
+				429A305614852847002F70BE /* CityTracksTests.m */,
+				429A305014852847002F70BE /* Supporting Files */,
+			);
+			path = CityTracksTests;
+			sourceTree = "<group>";
+		};
+		429A305014852847002F70BE /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				429A305114852847002F70BE /* CityTracksTests-Info.plist */,
+				429A305214852847002F70BE /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		429A302314852846002F70BE /* CityTracks */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 429A305A14852847002F70BE /* Build configuration list for PBXNativeTarget "CityTracks" */;
+			buildPhases = (
+				429A302014852846002F70BE /* Sources */,
+				429A302114852846002F70BE /* Frameworks */,
+				429A302214852846002F70BE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CityTracks;
+			productName = CityTracks;
+			productReference = 429A302414852846002F70BE /* CityTracks.app */;
+			productType = "com.apple.product-type.application";
+		};
+		429A304714852847002F70BE /* CityTracksTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 429A305D14852847002F70BE /* Build configuration list for PBXNativeTarget "CityTracksTests" */;
+			buildPhases = (
+				429A304314852847002F70BE /* Sources */,
+				429A304414852847002F70BE /* Frameworks */,
+				429A304514852847002F70BE /* Resources */,
+				429A304614852847002F70BE /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				429A304E14852847002F70BE /* PBXTargetDependency */,
+			);
+			name = CityTracksTests;
+			productName = CityTracksTests;
+			productReference = 429A304814852847002F70BE /* CityTracksTests.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		429A301B14852844002F70BE /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
+			buildConfigurationList = 429A301E14852845002F70BE /* Build configuration list for PBXProject "CityTracks" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 429A301914852844002F70BE;
+			productRefGroup = 429A302514852846002F70BE /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				429A302314852846002F70BE /* CityTracks */,
+				429A304714852847002F70BE /* CityTracksTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		429A302214852846002F70BE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				429A303314852847002F70BE /* InfoPlist.strings in Resources */,
+				429A303C14852847002F70BE /* MainStoryboard_iPhone.storyboard in Resources */,
+				429A303F14852847002F70BE /* MainStoryboard_iPad.storyboard in Resources */,
+				42FA0B38148563840036A327 /* CityTraces57.png in Resources */,
+				42FA0B3B148563C10036A327 /* CityTraces114.png in Resources */,
+				42F1F42F1485834C00A17A56 /* config.png in Resources */,
+				42F1F4321485843700A17A56 /* compass.png in Resources */,
+				42EA647B1487DEFD00DED7DE /* Settings.bundle in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		429A304514852847002F70BE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				429A305414852847002F70BE /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		429A304614852847002F70BE /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		429A302014852846002F70BE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				429A303514852847002F70BE /* main.m in Sources */,
+				429A303914852847002F70BE /* CTAppDelegate.m in Sources */,
+				429A304214852847002F70BE /* CTViewController.m in Sources */,
+				423B6BD2148543C400B15133 /* CTConfigViewController.m in Sources */,
+				428AB0781485692F004B5E90 /* CTManager.m in Sources */,
+				42431FE014C589F400105232 /* CTCommunicator.m in Sources */,
+				42431FE414C58A0F00105232 /* CTLocationDB.m in Sources */,
+				42C8EF8314C7182800F72337 /* NSString+MD5Addition.m in Sources */,
+				42C8EF8414C7182800F72337 /* UIDevice+IdentifierAddition.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		429A304314852847002F70BE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				429A305714852847002F70BE /* CityTracksTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		429A304E14852847002F70BE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 429A302314852846002F70BE /* CityTracks */;
+			targetProxy = 429A304D14852847002F70BE /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		429A303114852847002F70BE /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				429A303214852847002F70BE /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		429A303A14852847002F70BE /* MainStoryboard_iPhone.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				429A303B14852847002F70BE /* en */,
+			);
+			name = MainStoryboard_iPhone.storyboard;
+			sourceTree = "<group>";
+		};
+		429A303D14852847002F70BE /* MainStoryboard_iPad.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				429A303E14852847002F70BE /* en */,
+			);
+			name = MainStoryboard_iPad.storyboard;
+			sourceTree = "<group>";
+		};
+		429A305214852847002F70BE /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				429A305314852847002F70BE /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		429A305814852847002F70BE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		429A305914852847002F70BE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		429A305B14852847002F70BE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "CityTracks/CityTracks-Prefix.pch";
+				INFOPLIST_FILE = "CityTracks/CityTracks-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		429A305C14852847002F70BE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "CityTracks/CityTracks-Prefix.pch";
+				INFOPLIST_FILE = "CityTracks/CityTracks-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		429A305E14852847002F70BE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/CityTracks.app/CityTracks";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "CityTracks/CityTracks-Prefix.pch";
+				INFOPLIST_FILE = "CityTracksTests/CityTracksTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		429A305F14852847002F70BE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/CityTracks.app/CityTracks";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "CityTracks/CityTracks-Prefix.pch";
+				INFOPLIST_FILE = "CityTracksTests/CityTracksTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		429A301E14852845002F70BE /* Build configuration list for PBXProject "CityTracks" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				429A305814852847002F70BE /* Debug */,
+				429A305914852847002F70BE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		429A305A14852847002F70BE /* Build configuration list for PBXNativeTarget "CityTracks" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				429A305B14852847002F70BE /* Debug */,
+				429A305C14852847002F70BE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		429A305D14852847002F70BE /* Build configuration list for PBXNativeTarget "CityTracksTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				429A305E14852847002F70BE /* Debug */,
+				429A305F14852847002F70BE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 429A301B14852844002F70BE /* Project object */;
+}
