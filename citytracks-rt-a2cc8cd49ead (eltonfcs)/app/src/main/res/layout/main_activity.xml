@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:baselineAligned="false"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/iniciar_atualizacoes_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:onClick="iniciarAtualizacoesButtonHandler"
+            android:text="@string/iniciar_atualizacoes" />
+
+        <Button
+            android:id="@+id/parar_atualizacoes_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/small_margin"
+            android:layout_marginStart="@dimen/small_margin"
+            android:layout_weight="1"
+            android:enabled="false"
+            android:gravity="center"
+            android:onClick="paraAtualizacoesButtonHandler"
+            android:text="@string/parar_atualizacoes" />
+    </LinearLayout>
+
+    <Spinner
+        android:id="@+id/modo_de_transporte_spinner"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/latitude_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/small_margin"
+        android:layout_marginStart="@dimen/small_margin"
+        android:textSize="@dimen/default_text_size" />
+
+    <TextView
+        android:id="@+id/longitude_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/small_margin"
+        android:layout_marginStart="@dimen/small_margin"
+        android:textSize="@dimen/default_text_size" />
+
+    <TextView
+        android:id="@+id/hora_da_ultima_atualizacao_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/small_margin"
+        android:layout_marginStart="@dimen/small_margin"
+        android:textSize="@dimen/default_text_size" />
+
+    <TextView
+        android:id="@+id/velocidade_maxima"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/small_margin"
+        android:layout_marginStart="@dimen/small_margin"
+        android:textSize="@dimen/default_text_size" />
+
+    <TextView
+        android:id="@+id/velocidade_media"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/small_margin"
+        android:layout_marginStart="@dimen/small_margin"
+        android:textSize="@dimen/default_text_size" />
+
+    <TextView
+        android:id="@+id/numero_de_paradas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/small_margin"
+        android:layout_marginStart="@dimen/small_margin"
+        android:textSize="@dimen/default_text_size" />
+
+    <TextView
+        android:id="@+id/tempo_de_parada"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/small_margin"
+        android:layout_marginStart="@dimen/small_margin"
+        android:textSize="@dimen/default_text_size" />
+
+    <TextView
+        android:id="@+id/aceleracao_maxima"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/small_margin"
+        android:layout_marginStart="@dimen/small_margin"
+        android:textSize="@dimen/default_text_size" />
+
+    <TextView
+        android:id="@+id/mudancas_de_direcao"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/small_margin"
+        android:layout_marginStart="@dimen/small_margin"
+        android:textSize="@dimen/default_text_size" />
+    <TextView
+        android:id="@+id/tempo_de_parada_medio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/small_margin"
+        android:layout_marginStart="@dimen/small_margin"
+        android:textSize="@dimen/default_text_size" />
+    <TextView
+        android:id="@+id/numero_de_interpolacoes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/small_margin"
+        android:layout_marginStart="@dimen/small_margin"
+        android:textSize="@dimen/default_text_size" />
+
+    <TextView
+        android:id="@+id/total_de_pontos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/small_margin"
+        android:layout_marginStart="@dimen/small_margin"
+        android:textSize="@dimen/default_text_size" />
+
+    <TextView
+        android:id="@+id/total_de_pontos_capturados"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/small_margin"
+        android:layout_marginStart="@dimen/small_margin"
+        android:textSize="@dimen/default_text_size" />
+
+</LinearLayout>
